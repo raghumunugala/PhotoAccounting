@@ -6,7 +6,6 @@
 define("POST_CACHE", 2);
 define("PRE_CACHE", 5);
 
-
    /**
    * Iterates over a directory and returns file objects.
    *
@@ -82,7 +81,8 @@ $files = getImagesInDir('images');
    <link rel="stylesheet" type="text/css" href="css/jviewer.css">
    <script src="js/gsdom.js"></script>
    <script src="js/jviewer.js"></script>
-   <script src="http://yui.yahooapis.com/3.5.1/build/yui/yui-min.js"></script>
+   <script src="http://yui.yahooapis.com/3.6.0/build/yui/yui-min.js"></script>	
+   <script src="js/accountsTable.js"></script>
   
    <script>
    var $ = function(id){
@@ -108,7 +108,7 @@ $('jsv_konto').blur();
    </script>
 </head>
 <body>
-
+<div id="economicAccountsData" class="yui3-skin-sam"></div>
 <article id="jsv_left">
 	<div id="log"></div>
 	<div id="log2"></div>

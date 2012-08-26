@@ -1,6 +1,6 @@
 <?php
 /**
- * PHP extensions must be anabled: php_soap, php_openssl
+ * PHP extensions must be enabled: php_soap, php_openssl
  * @author igreactive
  *
  */

@@ -75,6 +75,13 @@ JSViewer = function () {
     };
 
     // // START : image details
+    /**
+     * Loads image detail from the server
+     *
+     * @param {Y} Yui3 object
+     * @param {imageID} the ID of the image to load
+     * @return {null}
+     */
     loadImageDetail = function (Y, imageID) {
         // Skip loading from database if:
         // 1) a save to db is in progress
@@ -122,6 +129,13 @@ JSViewer = function () {
         });
     };
 
+    /**
+     * Populates image detail onto form
+     *
+     * @param {Y} Yui3 object
+     * @param {obj} Object with image details as properties
+     * @return {null}
+     */
     populateImageDetail = function (Y, obj) {
         var image_id, errors;
         $('jsv_date').value = '';
@@ -153,6 +167,13 @@ JSViewer = function () {
         }
     };
 
+    /**
+     * Saves image detail to server
+     *
+     * @param {Y} Yui3 object
+     * @param {current_image_index} The index of the current displayed image
+     * @return {null}
+     */
     saveImageDetail = function (Y, current_image_index) {
         var ddate, image_id, tekst, belob, konto, modkonto, obj;
 

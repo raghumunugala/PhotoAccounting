@@ -104,14 +104,13 @@ $files = getImagesInDir('images');
    </script>
 </head>
 <body>
-	<div id="economicAccountsData" class="yui3-skin-sam"></div>
-	<article id="jsv_left">
+	<div id="jsv_left">
 		<div id="log"></div>
 		<div id="log2"></div>
-	</article>
-	<article id="jsv_right">
+	</div>
+	<div id="jsv_right">
 		<div id="flash_errors"></div>
-		<form id="jsv_form">
+		<div id="jsv_form">
 			<ul>
 				<li><label for="jsv_bilag">Bilag</label>
 					<div>
@@ -150,7 +149,8 @@ $files = getImagesInDir('images');
 					</div>
 				</li>
 			</ul>
-		</form>
-	</article>
+		</div>
+		<div id="economicAccountsData" class="yui3-skin-sam"></div>
+	</div>
 </body>
 </html>

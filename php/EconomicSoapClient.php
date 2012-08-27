@@ -16,7 +16,7 @@ class EconomicSoapClient {
 	 * http://apiforum.e-conomic.com/soap-f8/economic-api-exceptions-authorizationexception-t4678.html
 	 */
 	private function connect() {
-		include_once 'includes/web_service_credentials.php';
+		require_once 'includes/web_service_credentials.php';
 		ini_set('max_execution_time', 0);
 		try {
 			$this->client = new SoapClient("https://www.e-conomic.com/secure/api1/EconomicWebservice.asmx?WSDL", array("trace" => 1, "exceptions" => 1));

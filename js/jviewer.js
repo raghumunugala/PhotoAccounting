@@ -12,7 +12,8 @@ JSViewer = function () {
         loadImage, images,
         cacheGroup, log,
         // // START : image details
-        image_details, image_errors, restrict_db_update,
+        image_details, image_errors, general_error, displayFlashError,
+        restrict_db_update, onDbUpdateFailure,
         loadImageDetail, populateImageDetail, saveImageDetail;
         // // END : image details
 
@@ -161,6 +162,9 @@ JSViewer = function () {
             Y.one('#error_belob').setHTML(errors.belob);
             Y.one('#error_konto').setHTML(errors.konto);
             Y.one('#error_modkonto').setHTML(errors.modkonto);
+            
+            // // The next one is a general error not related to any field
+            Y.one('#error_general').setHTML(errors.general);
         } else {
             // Clear field errors from previous image
             Y.all('span.field_error').setHTML('');
@@ -218,6 +222,13 @@ JSViewer = function () {
             obj.modkonto = modkonto;
             image_details[image_id] = obj;
 
+			// Subscribe function 'onDbUpdateFailure' to "io.failure" i.e. timeout,
+			// passing it Y & the affected image id when that happens 
+			Y.on('io:failure', onDbUpdateFailure, Y, 
+				// 'Transaction Failed'
+				[Y, image_id]
+			);
+
             Y.io("php/set_image_detail.php", {
                 // // this is a post
                 method: 'POST',
@@ -232,7 +243,9 @@ JSViewer = function () {
                     + "&belob=" + belob
                     + "&konto=" + konto
                     + "&modkonto=" + modkonto,
-                // // ajax lifecycle event handlers
+                // Abort the transaction, if it is still pending, after 3000ms.
+                timeout : 3000,
+                // Ajax lifecycle event handlers
                 on: {
                     start: function (id) {
                         log('saving ' + image_id + ' ...');
@@ -242,7 +255,7 @@ JSViewer = function () {
                         restrict_db_update[image_id] = true;
                     },
                     complete: function (id, response) {
-                        var jsonObject = Y.JSON.parse(response.responseText);
+                       var jsonObject = Y.JSON.parse(response.responseText);
 
                         log(image_id + ' saved');
                         log(jsonObject);
@@ -272,27 +285,75 @@ JSViewer = function () {
         
                             // Remove update restriction
                             delete restrict_db_update[image_id];
-                        }
+                       }
 
+						// // Clear the general error as we can connect 
+						// // to the server just fine
+						general_error = '';
+						
 						// // Update the flash_errors div to notify
 						// // users that there is/are error(s)
-						var errorCount = 0, i = image_errors.length;
-						while (i--) {
-							if (typeof image_errors[i] !== 'undefined')
-								errorCount++;
-						}
-						var errorString = '';
-						if (errorCount > 0) {
-							errorString = errorCount + (errorCount > 1 ? ' errors ' : ' error ') + 'found';
-						}
-						Y.one('#flash_errors').setHTML(errorString);
+						displayFlashError(Y);
                     }
                 }
             });
 
         }
     };
-    // // END : image details
+
+    /**
+     * Handles storage of errors from timeouts arising from example 
+     * when the server is unreachable when saving an image's detail.
+     * 
+     * The customer for this project actually has a test case, where he
+     * disconnects his PC from LAN and expects the app to inform him
+     * that the database update has failed.
+     *
+     * @param {transactionid} The transaction's ID
+     * @param {response} The response object.  Only status and statusText 
+     * 					are populated when the transaction is terminated 
+     * 					due to abort or timeout. The status will read 0, 
+     * 					and statusText will return "timeout" or "abort" 
+     * 					depending on the mode of termination.
+     * @param {argzz} Can be anything you want. Here it is the id 
+     *                  of the image which we were trying to update
+     * @return {null}
+     */
+	onDbUpdateFailure = function (transactionid, response, argzz) {
+		// image_errors[argzz[1]] = {general : 'Unable to connect to database'};
+		general_error = 'Unable to connect to database';
+		
+		// // Since the 'complete' event of the Ajax handler wasn't 
+		// // reached if there is a timeout, run the code to display 
+		// // errors here as well
+		displayFlashError(argzz[0]);
+	};
+
+    /**
+     * Iterates through all entries in image_errors and checks if
+     * it contains valid errors i.e. not empty
+     * 
+     * If any is found, then the flash error message is shown.
+     *
+     * @param {Y} Yui3 object
+     * @return {null}
+     */
+	displayFlashError = function(Y) {
+		var errorCount = 0, i = image_errors.length;
+		while (i--) {
+			if (typeof image_errors[i] !== 'undefined')
+				errorCount++;
+		}
+		var errorString = '';
+		if (errorCount > 0) {
+			errorString = errorCount + (errorCount > 1 ? ' errors ' : ' error ') + 'found';
+		}
+		if (general_error != '') {
+			errorString = general_error + '<br/>' + errorString;
+		}
+		Y.one('#flash_errors').setHTML(errorString);
+	};
+	// // END : image details
 
     log = function (m) {
         if (window.console) {

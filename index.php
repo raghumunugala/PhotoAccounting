@@ -87,10 +87,10 @@ $files = getImagesInDir('images');
 	}
 
 	var my_codes = Array();
-	my_codes['y'] = 'yyyy';
-	my_codes['a'] = 'aaaa';
-	my_codes['b'] = 'bbbb';
-	my_codes['x'] = 'xxxx';
+	my_codes['a'] = '3120';
+	my_codes['s'] = '1110';
+	my_codes['d'] = '1120';
+	my_codes['f'] = '1130';
 	
 	document.onkeydown=function(e){
 		var valas = my_codes[String.fromCharCode(e.which).toLowerCase()];
@@ -118,16 +118,22 @@ $files = getImagesInDir('images');
 							size="10" /><span id="error_bilag" class="field_error"></span>
 					</div>
 				</li>
-				<li><label for="jsv_modkonto">Modkonto</label>
-					<div>
-						<input type="text" name="jsv_modkonto" id="jsv_modkonto" size="10" /><span
-							id="error_modkonto" class="field_error"></span>
-					</div>
-				</li>
 				<li><label for="jsv_date">Date</label>
 					<div>
 						<input type="text" name="jsv_date" id="jsv_date" size="10" /><span
 							id="error_date" class="field_error"></span>
+					</div>
+				</li>
+				<li><label for="jsv_tekst">Tekst</label>
+					<div>
+						<textarea name="jsv_tekst" id="jsv_tekst" cols="41"></textarea>
+						<br /> <span id="error_tekst" class="field_error"></span>
+					</div>
+				</li>
+				<li><label for="jsv_modkonto">Modkonto</label>
+					<div>
+						<input type="text" name="jsv_modkonto" id="jsv_modkonto" size="10" /><span
+							id="error_modkonto" class="field_error"></span>
 					</div>
 				</li>
 				<li><label for="jsv_konto">Konto</label>
@@ -140,12 +146,6 @@ $files = getImagesInDir('images');
 					<div>
 						<input type="text" name="jsv_belob" id="jsv_belob" size="10" /><span
 							id="error_belob" class="field_error"></span>
-					</div>
-				</li>
-				<li><label for="jsv_tekst">Tekst</label>
-					<div>
-						<textarea name="jsv_tekst" id="jsv_tekst" cols="41"></textarea>
-						<br /> <span id="error_tekst" class="field_error"></span>
 					</div>
 				</li>
 			</ul>

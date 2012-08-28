@@ -80,11 +80,12 @@ $files = getImagesInDir('images');
 <script src="js/jviewer.js"></script>
 <script src="http://yui.yahooapis.com/3.6.0/build/yui/yui-min.js"></script>
 <script src="js/accountsTable.js"></script>
+<script src="js/jquery.js">
 
 <script>
-	var $ = function(id){
-		return document.getElementById(id);
-	}
+	//var $ = function(id){
+	//	return document.getElementById(id);
+	//}
 
 	var my_codes = Array();
 	my_codes['a'] = '3120';
@@ -153,4 +154,41 @@ $files = getImagesInDir('images');
 		<div id="economicAccountsData" class="yui3-skin-sam"></div>
 	</div>
 </body>
+ <script>
+ var currentValue;
+ var initialAmount = parseInt(document.getElementById('jsv_belob0').value);
+ var count= 1;
+ var amounts = new Array();
+ var beforeRemoved;
+ function captureValue(obj) {
+	currentValue = parseInt(obj.value);
+ }
+function splitAccount(obj) {
+	if (currentValue > obj.value && (beforeRemoved != parseInt(obj.value))) {
+		$('ul').append("<li id='li"+count+"'><label for='jsv_belob"+count+"'>Bel&oslash;b</label><div><input type='text' name=jsv_belob"+count+"' id='jsv_belob"+count+"' onfocus='captureValue(this)' onblur='splitAccount(this)' value='"+(currentValue - obj.value)+"'/></div></li><li id='kontoLi"+count+"'><label for='jsv_konto"+count+"'>Konto</label><div><input type='text' name='jsv_konto"+count+"' id='jsv_konto"+count+"'/></div></li>");
+		count++;
+	} else if(obj.id=='jsv_belob0') {
+		if (initialAmount == parseInt(obj.value))
+		{
+		for(var i=1;i<count;i++) {
+				amounts.push(parseInt(document.getElementById('jsv_belob'+i).value));
+				$("#li"+i).remove();
+				$("#jsv_konto"+i).remove();
+			}
+			beforeRemoved= currentValue;
+			count = 1;
+		}		//alert(beforeRemoved+"::"+parseInt(obj.value));
+		if (beforeRemoved == parseInt(obj.value)) {
+			for(var i = 0;i<amounts.length;i++) {
+				$('ul').append("<li id='li"+count+"'><label for='jsv_belob"+count+"'>Bel&oslash;b</label><div><input type='text' name=jsv_belob"+count+"' id='jsv_belob"+count+"' onfocus='captureValue(this)' onblur='splitAccount(this)' value='"+amounts[i]+"'/></div></li><li id='kontoLi"+count+"'><label for='jsv_konto"+count+"'>Konto</label><div><input type='text' name='jsv_konto"+count+"' id='jsv_konto"+count+"'/></li>");
+				count++;
+			}
+			amounts = new Array();
+			beforeRemoved = 0;
+		}
+	} else {
+		obj.value = currentValue;
+	}
+}
+ </script>
 </html>

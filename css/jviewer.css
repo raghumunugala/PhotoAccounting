@@ -1,44 +1,26 @@
 
 /** COPYRIGHT Time at Task */
 
-article#jsv_left{
+#jsv_left{
     float: left;
     width: 50%;
     padding: 20px;
 }
 
-article#jsv_right{
+#jsv_right{
     float: right;
     width: 39%;
     padding: 20px;
 }
 
-form#jsv_form{
-    float: left;
-    width: 100%;
-}
-
-form#jsv_form ul{
+#jsv_form ul{
     margin:0;
     list-style-type:none;
     padding:0;
 }
 
-form#jsv_form ul li{
-    float: left;
-    width: 100%;
+#jsv_form ul li{
     margin: 3px 0 0 0;
-}
-
-form#jsv_form ul li label{
-    float: left;
-    width: 80px;
-}
-
-form#jsv_form ul li div{
-    float: left;
-    /* width: 300px; */
-    width: 450px;
 }
 
 span.field_error{
